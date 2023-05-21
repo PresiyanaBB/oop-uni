@@ -145,7 +145,7 @@ DynamicArray<T>& DynamicArray<T>::operator=(DynamicArray<T>&& other)
 template <typename T>
 void DynamicArray<T>::resize(size_t nCap)
 {
-	int* newData = new T[nCap];
+	T* newData = new T[nCap];
 
 	for (size_t i = 0; i < size; i++)
 	{
