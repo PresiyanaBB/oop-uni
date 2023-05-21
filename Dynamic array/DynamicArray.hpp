@@ -29,6 +29,8 @@ public:
 	unsigned count(T obj) const; //count of obj
 	unsigned count() const; //size of collection
 	bool contains(T obj) const;
+	void sort();
+	void print() const;
 
 	T& operator[](size_t index);
 	T operator[](size_t index) const;
@@ -36,6 +38,28 @@ public:
 
 	~DynamicArray();
 };
+
+template<typename T>
+void DynamicArray<T>::sort()
+{
+	for (int i = 0; i < size - 1; ++i) {
+		for (int j = 0; j < size - i - 1; ++j) {
+			if (data[j] > data[j + 1]) {
+				T temp = data[j + 1];
+				data[j + 1] = data[j];
+				data[j] = temp;
+			}
+		}
+	}
+}
+
+template<typename T>
+void DynamicArray<T>::print() const
+{
+	for (int i = 0; i < size; ++i)
+		std::cout << data[i] << " ";
+	std::cout << std::endl;
+}
 
 template <typename T>
 DynamicArray<T>& DynamicArray<T>::operator+=(const DynamicArray<T>& other)
