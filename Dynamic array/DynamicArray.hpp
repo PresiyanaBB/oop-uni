@@ -23,7 +23,7 @@ public:
 
 	DynamicArray<T>& operator=(const DynamicArray<T>& other);
 	DynamicArray<T>& operator=(DynamicArray<T>&& other);
-
+	
 	void copyFromArray(const T* other,int size);
 	void add(T obj);
 	void remove(T obj);
@@ -31,6 +31,7 @@ public:
 	unsigned count() const; //size of collection
 	bool contains(T obj) const;
 	DynamicArray<T>& sort();
+	DynamicArray<T> select(bool (*criteria)(T obj)); //set.select([](int i) { return i % 2 == 0; });
 	void print() const;
 
 	T& operator[](size_t index);
@@ -39,6 +40,17 @@ public:
 
 	~DynamicArray();
 };
+
+template<typename T>
+DynamicArray<T> DynamicArray<T>::select(bool (*criteria)(T obj))
+{
+	DynamicArray<T> result;
+	for (size_t i = 0; i < size; i++)
+		if (criteria(data[i]))
+			result.add(data[i]);
+
+	return result;
+}
 
 template<typename T>
 DynamicArray<T>& DynamicArray<T>::sort()
@@ -126,17 +138,17 @@ void DynamicArray<T>::copyFrom(const DynamicArray<T>& other)
 	data = new T[capacity];
 
 	for (size_t i = 0; i < size; i++)
-	{
 		data[i] = other.data[i];
-	}
 }
 
 template <typename T>
 void DynamicArray<T>::moveFrom(DynamicArray<T>&& other)
 {
 	data = other.data;
-	other.data = nullptr;
+	size = other.size;
+	capacity = other.capacity;
 
+	other.data = nullptr;
 	other.size = other.capacity = 0;
 }
 
