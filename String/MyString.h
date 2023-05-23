@@ -17,6 +17,8 @@ public:
 	MyString(const char* data);
 	MyString(const MyString& other);
 	MyString& operator=(const MyString& other);
+	MyString& operator=(const char* other);
+	MyString& operator=(const char other);
 	~MyString();
 
 	MyString(MyString&& other) noexcept;
@@ -24,6 +26,8 @@ public:
 
 	size_t length() const;
 	MyString& operator+=(const MyString& other);
+	MyString& operator+=(const char* other);
+	MyString& operator+=(const char other);
 
 	MyString substr(size_t begin, size_t howMany) const;
 
