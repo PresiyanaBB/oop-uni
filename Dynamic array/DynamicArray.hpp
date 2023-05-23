@@ -30,6 +30,7 @@ public:
 	unsigned count(T obj) const; //count of obj
 	unsigned count() const; //size of collection
 	bool contains(T obj) const;
+	DynamicArray<T>& keepUniqueElements();
 	DynamicArray<T>& sort();
 	DynamicArray<T> select(bool (*criteria)(T obj)); //set.select([](int i) { return i % 2 == 0; });
 	void print() const;
@@ -40,6 +41,44 @@ public:
 
 	~DynamicArray();
 };
+
+template<typename T>
+DynamicArray<T>& DynamicArray<T>::keepUniqueElements()
+{	
+	//sort data
+	for (int i = 0; i < size - 1; ++i) {
+		for (int j = 0; j < size - i - 1; ++j) {
+			if (data[j] > data[j + 1]) {
+				T temp = data[j + 1];
+				data[j + 1] = data[j];
+				data[j] = temp;
+			}
+		}
+	}
+
+	T* result = new T[size];
+	result[0] = data[0];
+	int ind = 1;
+
+	for (size_t i = 1; i < size; i++)
+	{
+		if (data[i] == data[i - 1])
+			continue;
+
+		result[ind++] = data[i];
+	}
+
+	T* toCopy = new T[ind];
+	for (size_t i = 0; i < ind; i++)
+		toCopy[i] = result[i];
+
+	delete[] result;
+	delete[] data;
+	data = toCopy;
+	size = ind;
+
+	return *this;
+}
 
 template<typename T>
 DynamicArray<T> DynamicArray<T>::select(bool (*criteria)(T obj))
