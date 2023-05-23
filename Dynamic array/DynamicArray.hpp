@@ -24,6 +24,7 @@ public:
 	DynamicArray<T>& operator=(const DynamicArray<T>& other);
 	DynamicArray<T>& operator=(DynamicArray<T>&& other);
 
+	void copyFromArray(const T* other,int size);
 	void add(T obj);
 	void remove(T obj);
 	unsigned count(T obj) const; //count of obj
@@ -51,6 +52,18 @@ void DynamicArray<T>::sort()
 			}
 		}
 	}
+}
+
+template<typename T>
+void DynamicArray<T>::copyFromArray(const T* other, int size)
+{
+	free();
+	this->size = size;
+	capacity = size*2;
+	data = new T[capacity];
+
+	for (size_t i = 0; i < size; i++)
+		data[i] = other[i];
 }
 
 template<typename T>
