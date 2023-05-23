@@ -30,6 +30,33 @@ MyString& MyString::operator+=(const MyString& other)
 	return *this;
 }
 
+MyString& MyString::operator+=(const char* other)
+{
+	char* result = new char[(_length += strlen(other)) + 1];
+	result[0] = '\0';
+	strcat(result, _data);
+	strcat(result, other);
+
+	delete[] _data;
+	_data = result;
+
+	return *this;
+}
+
+MyString& MyString::operator+=(const char other)
+{
+	char* result = new char[(_length += 1) + 1];
+	result[0] = '\0';
+	strcat(result, _data);
+	result[_length - 1] = other;
+	result[_length] = '\0';
+
+	delete[] _data;
+	_data = result;
+
+	return *this;
+}
+
 MyString::MyString() : MyString(1)
 {
 	_data[0] = '\0';
@@ -55,6 +82,37 @@ MyString& MyString::operator=(const MyString& other)
 	return *this;
 }
 
+MyString& MyString::operator=(const char* other)
+{
+	free();
+
+	_length = strlen(other);
+	_data = new char[_length + 1];
+	strcpy(_data, other);
+
+	return *this;
+}
+
+MyString& MyString::operator=(const char other)
+{
+	free();
+	if (other == '\0')
+	{
+		_length = 0;
+		_data = new char[1];
+		_data[0] = other;
+	}
+
+	else
+	{
+		_length = 1;
+		_data = new char[_length + 1];
+		_data[0] = other;
+		_data[1] = '\0';
+	}
+
+	return *this;
+}
 
 void MyString::free()
 {
@@ -98,12 +156,12 @@ MyString& MyString::operator=(MyString&& other) noexcept
 	return *this;
 }
 
-char& MyString::operator[](size_t index) //Неконстантен достъп
+char& MyString::operator[](size_t index) //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 {
 	return _data[index];
 }
 
-char MyString::operator[](size_t index) const //Константен достъп 
+char MyString::operator[](size_t index) const //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 
 {
 	return _data[index];
 }
