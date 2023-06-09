@@ -25,14 +25,14 @@ public:
 	DynamicArray<T>& operator=(DynamicArray<T>&& other);
 	
 	void copyFromArray(const T* other,int size);
-	void add(T obj);
-	void remove(T obj);
-	unsigned count(T obj) const; //count of obj
+	void add(const T& obj);
+	void remove(const T& obj);
+	unsigned count(const T& obj) const; //count of obj
 	unsigned count() const; //size of collection
-	bool contains(T obj) const;
+	bool contains(const T& obj) const;
 	DynamicArray<T>& keepUniqueElements();
 	DynamicArray<T>& sort();
-	DynamicArray<T> select(bool (*criteria)(T obj)); //set.select([](int i) { return i % 2 == 0; });
+	DynamicArray<T> select(bool (*criteria)(const T& obj)); //set.select([](int i) { return i % 2 == 0; });
 	void print() const;
 
 	T& operator[](size_t index);
@@ -81,7 +81,7 @@ DynamicArray<T>& DynamicArray<T>::keepUniqueElements()
 }
 
 template<typename T>
-DynamicArray<T> DynamicArray<T>::select(bool (*criteria)(T obj))
+DynamicArray<T> DynamicArray<T>::select(bool (*criteria)(const T& obj))
 {
 	DynamicArray<T> result;
 	for (size_t i = 0; i < size; i++)
@@ -257,7 +257,7 @@ DynamicArray<T>::~DynamicArray()
 }
 
 template <typename T>
-void DynamicArray<T>::add(T obj)
+void DynamicArray<T>::add(const T& obj)
 {
 	if (size == capacity)
 	{
@@ -268,7 +268,7 @@ void DynamicArray<T>::add(T obj)
 }
 
 template <typename T>
-void DynamicArray<T>::remove(T obj)
+void DynamicArray<T>::remove(const T& obj)
 {
 	int elemIndex = -1;
 
@@ -289,7 +289,7 @@ void DynamicArray<T>::remove(T obj)
 }
 
 template <typename T>
-unsigned DynamicArray<T>::count(T obj) const
+unsigned DynamicArray<T>::count(const T& obj) const
 {
 	unsigned elementCounter = 0;
 
@@ -305,7 +305,7 @@ unsigned DynamicArray<T>::count(T obj) const
 }
 
 template <typename T>
-bool DynamicArray<T>::contains(T obj) const
+bool DynamicArray<T>::contains(const T& obj) const
 {
 	for (size_t i = 0; i < size; i++)
 	{
