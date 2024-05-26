@@ -1,0 +1,401 @@
+ako ctor ili ~ sa private ne moje da se suzdade obekt ot tipa
+
+
+----------------------------
+
+
+catch(...){
+}
+catch(const exception& ){
+}
+
+
+ne se kompilira shtot ima nqkuv catch sled (...)
+
+-----------------------------
+
+
+void f() {
+	throw std::overflow_error("");
+}
+
+
+	try {
+		f();
+	}
+	catch (const runtime_error& e) {
+		std::cout << "runtime" << std::endl;
+	}
+	catch (const overflow_error& e) {
+		std::cout << "overflow" << std::endl;
+	}
+
+
+shte se kompilira ama shte izvede "runtime" shtot e po-visoko v ierarhiqta i overflow nasledqva runtime
+
+-----------------------------
+
+f() { A a; throw 2;}
+
+try {
+f()
+}
+catch(...){
+cout << "handled";
+}
+
+
+purvo izliza destruktora i posle kakvoto e v catch-a
+
+-------------------------------
+
+
+f() { A a; throw 2;}
+
+try {
+f()
+}
+catch(char){
+}
+
+
+tuka nqma da se pusne destr shtot ne sme catch-nali pravilniq ex i si gurmi
+
+
+---------------------------------
+
+
+
+f(&&)
+
+
+int a=5;
+f(a)          ne se komp
+
+
+
+---------------------------------
+
+
+void g(const int&) {
+	std::cout << "LValue";
+}
+
+void f(int&& a) {
+	g(std::move(a));
+}
+
+int main() {
+	int i = 0;
+
+	f(std::move(i));
+}
+
+
+
+shte si otpechata "LVal" shtot na const & moje da rugash vsichko ama ako beshe const && ne se kompilira
+
+
+---------------------------------
+
+ako imame template funkciq deto iska op+, a posle kato polzwame s klasa nqma op+ v nego izobshto ne se kompilira
+
+
+----------------------------------
+
+
+template <typename T>
+void f(const T& t) {
+    t.f();
+}
+
+    A a(8);
+    f<A>(a);
+    f<A>(5);
+
+i dvete si bachkat i si izvejdat 8 posle 5 shtot ima convertirasht ctor   //s explicit A() ne se kompilira tui s 5
+
+-----------------------------------
+
+
+template<class K, class V>
+struct Entity { ... };
+
+template<class T>
+struct Entity<int, T> { ... };
+
+
+tui izgle templ spec za struct/klasove : ClassName<int,T>
+
+------------------------------------
+
+
+class Animal e s pure virtual func , nqma virtualen destr
+Cat i Dog nasledqvat Animal
+
+
+//Animal* animal1 = new Animal();                  =>  ne se kompilira greshka shtot e abstrakten
+		Animal* animal2 = new Dog();
+		Animal* animal3 = new Cat();
+
+		animal2->makeSound();
+		animal3->makeSound();
+
+		delete animal2;
+		delete animal3;
+
+
+izvejda na konzolata:
+
+ctor animal
+ctor dog
+ctor animal
+ctor cat
+Woof!
+Meow!
+~ animal
+~ animal
+
+
+demek to vika pravilnite constr (i na abstraktniq klas vkluchitelno) i funkciqta (samo shtot e virtual, ako ne beshe shteshe vinagi da se vika na animal zvuka)
+obache samo destr na animal vmesto na dog i cat shtot ne e virtual destr
+
+
+--------------------------------------------------------------------
+
+
+ptr e 8 bytes (64 bit)
+
+static promenlivite ne vliqqt na size ili align v dr pamet sa
+
+
+---------------------------------------------------------------------
+
+
+
+struct A {
+    char ch1;
+    char ch2;
+
+    virtual ~A() = default;
+};
+
+struct B : A {
+    int32_t ch1;
+};
+
+int main() {
+    //vptr :(
+	cout << sizeof(A) << " " << alignof(A) << endl;  //11...... 8 => 16 8
+	cout << sizeof(B) << " " << alignof(B) << endl; //11...... 8 4.... => 24 8
+                                                    //8 11...... 4.... => 24 8    => b si nqma negov si otdelen vptr - nasledqva na bashtata i runtime se modify-va
+}
+
+
+
+-------------------------------------------------------------------------
+
+
+A ima virtual void f()
+C ako iska da ima int f() override nqq se kompil shtot ne e sushtiq return type
+
+-------------------------------------------------------------------------
+
+
+does the virtual table contain non virtual functions c++ ?
+
+No, it doesn't. As calls to non-virtual methods can be resolved during compilation (since compiler knows the addresses of non virtual functions), the compiler generates instructions to call them 'directly' (i.e. statically).
+
+
+-------------------------------------------------------------------------
+
+
+override na f() final ne se kompil
+
+
+--------------------------------------------------------------------------
+
+
+struct A
+struct B : A
+struct C : B {
+	ne mojem da barame na da vikame ctor, op= i tn   =>  kompil greshka , to e normalno shtoto e praroditel
+}
+
+
+
+---------------------------------------------------------------------------
+
+
+const T* operator[](unsigned) const;
+T* operator[](unsigned);
+
+
+--------------------------------------------------------------------------
+
+shablonite na klas v .hpp file !!!!!   da ne sa .cpp i .h
+
+
+template <class T>
+class Container 
+{
+  void add(const T& el);
+}
+
+
+template<class T>
+void Container<T>::add(const T& el)
+{
+   ...
+}
+
+
+--------------------------------------------------------------------------
+
+
+class A
+{
+
+A::A(int x) {...}      //ne moje tui A::_
+
+}
+
+----------------------------------------------------------------------------
+
+
+
+
+
+ZADACHI
+
+
+----------------------------------------------------------------------------
+1) operatorite kato se predef:
+
+1.1) vutre:
+
+A& operator+=(const A& other);
+
+A& operator[](size_t index);
+const A& operator[](size_t index) const;  // int operator[](size_t index) const;
+
+friend std::ostream& operator<<(std::ostream& os, const A& obj);
+friend std::istream& operator>>(std::istream& is, A& ref);
+
+1.2) vunka:
+
+A operator+(const A& lhs, const A& rhs);
+
+bool operator==(const A& lhs, const A& rhs);
+
+
+------------------------------------------------------------------------------
+
+using f = bool (*) (int, int);
+
+bool (*f)(int, int)
+
+template<class T>
+class A
+{...}
+
+A<T>::add(...){...}
+virtual ProcedureBase<T>* clone() const = 0;
+
+
+template <typename T, const unsigned S>
+class MyStack
+
+
+Queue::push
+{
+	data[put] = obj; // = std::move(obj)
+	(++put) %= capacity;
+	size++;
+}
+
+Queue::pop
+{
+	(++get) %= capacity;
+	size--;
+}
+
+------------------------------------------------------------------------------
+visitor
+
+//in Shape.h
+
+class Triangle;
+class Circle;
+
+class Shape   // Abstract class - no instances of Shape are allowed!
+{
+
+virtual bool intersectsWith(const Shape* other) const = 0;
+
+virtual bool intersectsWithTriangle(const Triangle* other) const = 0;
+virtual bool intersectsWithCircle(const Circle* other) const = 0;
+
+}
+
+
+//in Circle.h
+
+class Circle
+{
+bool intersectsWith(const Shape* other) const
+{
+	return other->intersectsWithCircle(this);
+}
+
+bool intersectsWithTriangle(const Triangle* other) const
+{
+	std::cout << "Formula for circle with triangle" << std::endl;
+	return true;
+}
+}
+
+
+--------------------------------------------------------------------------------------
+
+
+virtual ~A() = default;
+virtual A* clone() const = 0;
+
+A* clone() const override;
+B::A* clone() const { return new B(*this); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
