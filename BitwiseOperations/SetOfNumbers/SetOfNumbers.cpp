@@ -30,7 +30,7 @@ void SetOfNumbers::addOrRemove(unsigned number, bool wantToAdd)
 
     else 
         if(contains(number))
-            data[getBucketIndex(number)] &= ~getMask(number);
+            data[getBucketIndex(number)] ^= getMask(number);
 }
 SetOfNumbers unionOrIntersection(const SetOfNumbers& lhs, const SetOfNumbers& rhs, bool wantUnion)
 {
