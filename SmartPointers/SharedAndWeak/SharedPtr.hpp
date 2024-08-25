@@ -2,40 +2,44 @@
 #include <iostream>
 #include <stdexcept>
 
+
+struct Counter
+{
+	unsigned useCount = 0;
+	unsigned weakCount = 0;
+
+	void removeSharedPtr()
+	{
+		useCount--;
+		if (useCount == 0)
+			weakCount--;
+	}
+	void removeWeakPtr()
+	{
+		weakCount--;
+	}
+
+	void addSharedPtr()
+	{
+		useCount++;
+		if (useCount == 1)
+			weakCount++;
+	}
+
+	void addWeakPtr()
+	{
+		weakCount++;
+	}
+
+};
+
+template <class V>
+class WeakPtr;
+
 template <typename T>
 class SharedPtr
 {
-	template <typename T> friend class WeakPtr;
-
-	struct Counter
-	{
-		unsigned useCount = 0;
-		unsigned weakCount = 0;
-
-		void removeSharedPtr()
-		{
-			useCount--;
-			if (useCount == 0)
-				weakCount--;
-		}
-		void removeWeakPtr()
-		{
-			weakCount--;
-		}
-
-		void addSharedPtr()
-		{
-			useCount++;
-			if (useCount == 1)
-				weakCount++;
-		}
-
-		void addWeakPtr()
-		{
-			weakCount++;
-		}
-
-	};
+	template <typename V> friend class WeakPtr;
 
 	T* data;
 	Counter* counter;
@@ -44,6 +48,7 @@ class SharedPtr
 	void copyFrom(const SharedPtr<T>& other);
 	void moveFrom(SharedPtr<T>&& other);
 
+	SharedPtr(WeakPtr<T>& ptr);
 public:
 	SharedPtr();
 	SharedPtr(T* data);
@@ -63,6 +68,17 @@ public:
 	
 	~SharedPtr();
 };
+
+template<class T>
+inline SharedPtr<T>::SharedPtr(WeakPtr<T>& ptr)
+{
+	data = ptr.data;
+	counter = ptr.counter;
+	if (counter)
+	{
+		counter->addSharedPtr();
+	}
+}
 
 template <typename T>
 void SharedPtr<T>::free()
@@ -185,6 +201,7 @@ const T* SharedPtr<T>::operator->() const {
 	return data;
 }
 
+template<typename T>
 bool SharedPtr<T>::isInitlized() const
 {
 	return data != nullptr;

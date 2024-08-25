@@ -1,10 +1,13 @@
+#pragma once
 #include "SharedPtr.hpp"
 #include <stdexcept>
 template <typename T>
 class WeakPtr
 {
+	template<class V> friend class SharedPtr;
+
 	T* data;
-	SharedPtr<T>::Counter* counter;
+	Counter* counter;
 	void copyFrom(const WeakPtr<T>& other);
 	void free();
 	void moveFrom(WeakPtr<T>&& other);
@@ -19,6 +22,8 @@ public:
 	WeakPtr(WeakPtr<T>&& other);
 	WeakPtr& operator=(WeakPtr<T>&& other);
 	~WeakPtr();
+
+	SharedPtr<T> lock() const;
 
 	bool expired() const;
 };
@@ -116,4 +121,13 @@ template <typename T>
 bool WeakPtr<T>::expired() const
 { 
 	return counter && counter->useCount == 0;
+}
+
+template <typename T>
+SharedPtr<T> WeakPtr<T>::lock() const
+{
+	if (expired())
+		return SharedPtr<T>();
+	else
+		return SharedPtr<T>(*this);
 }
