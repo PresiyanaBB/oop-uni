@@ -72,7 +72,7 @@ ArrayView<T> ArrayView<T>::subArr(unsigned beginInd) {
 
 template <class T>
 ArrayView<T> ArrayView<T>::subArr(unsigned beginInd, size_t size) {
-    if (size + beginIndex > getSize())
+    if (size + beginInd > getSize())
     {
 	throw std::invalid_argument("Cannot create subview with larger scope than the original view");
     }
