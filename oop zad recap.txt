@@ -1,0 +1,430 @@
+stringstream ss(const char*)  - da polzwame char array kato string array
+!ss.eof()
+ss.getline(target to write, max count , separator/delim);
+
+------------------------------------------------------------------------------
+
+check for nullptr, eof, is_open
+
+------------------------------------------------------------------------------
+
+strcmp(ch1, ch2) 
+== 0 // equal
+ < 0 // first non-matching character in ch1 is with smaller ASCII code  => strcmp("abc", "abz") < 0 (== -1), 'c' ascii is less than 'z' ascii code
+ > 0 // analogical
+
+------------------------------------------------------------------------------
+
+st.name = new char[strlen(name) + 1];
+strcpy(st.name, name);
+
+// delete[] st.name;
+
+------------------------------------------------------------------------------
+
+int nameLen = strlen(st.name);
+ofs.write((const char*)&nameLen, sizeof(int));
+ofs.write(st.name, nameLen + 1);
+
+ofs.write((const char*)&st.age, sizeof(st.age));
+
+------------------------------------------------------------------------------
+
+int nameLen;
+ifs.read((char*)&nameLen, sizeof(nameLen));
+st2.name = new char[nameLen + 1];
+ifs.read(st2.name, nameLen + 1);
+
+ifs.read((char*)&st2.age, sizeof(st2.age));
+
+-------------------------------------------------------------------------------
+
+void readStudents(std::ifstream& ifs, DynamicNameStudent*& ptr, size_t& size)
+{
+	ifs.read((char*)&size, sizeof(size));
+ 
+	ptr = new DynamicNameStudent[size];
+ 
+	for (size_t i = 0; i < size; i++)
+		ptr[i] = readFromBinaryFile(ifs);
+}
+
+// studentsCount = sizeOfFile / sizeof(Student);
+// ptr = new Student[studentsCount];
+
+---------------------------------------------------------------------------------
+
+strcpy(dest, source);
+
+this->name = new char[strlen(name) + 1];
+strcpy(this->name, name);
+
+---------------------------------------------------------------------------------
+
+int reverse(int n)
+{
+	int reversed = 0;
+	while (n != 0)
+	{
+		reversed = reversed * 10 + n % 10;
+		n /= 10;
+	}
+	return reversed;
+}
+
+-----------------------------------------------------------------------------------
+
+bool isPrime(int n)
+{
+	if (n < 2)
+		return false;
+
+	double temp = sqrt(n);
+
+	for (int i = 2; i <= temp; i++)
+		if (n % i == 0)
+			return false;
+	
+	return true;
+}
+
+------------------------------------------------------------------------------------
+
+void printStrIter(const char* str) const
+{
+	while (*str)
+	{
+		if (shouldCensoreChar(*str))
+			std::cout << "*";
+		else
+			std::cout << *str;
+		str++;
+	}
+}
+
+------------------------------------------------------------------------------------
+
+//example for a macro
+#define MAX(a,b) (a > b ? a : b)
+
+------------------------------------------------------------------------------------
+
+constexpr unsigned MAX_NUM = 1023;
+constexpr unsigned NUMBERS_COUNT = MAX_NUM + 1;
+constexpr unsigned BUCKET_SIZE = sizeof(uint8_t) * 8;
+constexpr unsigned BUCKETS_COUNT = NUMBERS_COUNT / BUCKET_SIZE + 1;
+
+-------------------------------------------------------------------------------------
+
+vutre v public: 
+
+friend std::ostream& operator<<(std::ostream&, const Complex&);
+friend std::istream& operator>>(std::istream&, Complex&);
+Complex& operator+=(const Complex&);
+
+otvunka:
+
+Complex operator+(const Complex&, const Complex&);
+
+-------------------------------------------------------------------------------------
+
+int& operator[](size_t); //get set
+const int operator[](size_t) const; // get
+
+-------------------------------------------------------------------------------------
+
+// we need to use strncat instead of strcat, because strcat will not work for str += str 
+// (the terminating zero of str will be destroyed by the first char)
+std::strncat(_data, other._data, other.getSize()); 
+
+--------------------------------------------------------------------------------------
+
+try {
+	...
+}
+catch (const exception& e) {
+	...
+}
+
+---------------------------------------------------------------------------------------
+
+void StringPool::resize(unsigned newCap)
+{
+	StringRecord* newArr = new StringRecord[newCap];
+
+	for (unsigned i = 0; i < stringCount; i++)
+		newArr[i] = stringRecords[i]; //here a shallow copy is made (so we don't reallocate the strings)
+        
+	stringCapacity = newCap;
+	delete[] stringRecords; //the array is deleted, but not the strings (the constructor of the StringRecord doesn't delete the string)
+	stringRecords = newArr;
+}
+
+------------------------------------------------------------------------------------------
+
+ako imam ArrPool ili nqkakva kolekciq ot neshto ne otdelno si pravq vutreshna structura
+
+------------------------------------------------------------------------------------------
+
+static size_t closestPowerOfAwo(size_t n)
+{
+	n--;
+
+	n |= n >> 1;
+	n |= n >> 2;
+	n |= n >> 4;
+	n |= n >> 8;
+	n |= n >> 16;
+	n |= n >> 32;
+
+	return n + 1;
+};
+
+-------------------------------------------------------------------------------------------
+
+op= , ctor, cc na roditelq se vikat eksplicitno
+
+-------------------------------------------------------------------------------------------
+
+virtual ~Collection() = default;
+
+--------------------------------------------------------------------------------------------
+
+void DynamicCollection::resize(size_t nCap)
+{
+	int* newData = new int[nCap];
+
+	for (size_t i = 0; i < size; i++)
+		newData[i] = data[i];
+
+	delete[] data;
+	data = newData;
+	capacity = nCap;
+}
+
+---------------------------------------------------------------------------------------------
+
+struct point
+{
+	point() :x(0), y(0){}
+	point(int x, int y) :x(x), y(y){}
+
+	int x;
+	int y;
+
+	double getDist(const point& other) const {
+		int dx = x - other.x;
+		int dy = y - other.y;
+		return sqrt(dx*dx + dy*dy);
+	}
+};
+
+...
+
+virtual double getArea() const = 0;
+
+----------------------------------------------------------------------------------------------
+
+ifstream ifs(filePath);
+
+if (!ifs.is_open()) {
+	throw std::exception("Cannot open file");
+}
+
+...
+
+ifs.close();
+
+------------------------------------------------------------------------------------------------
+
+csv parser with delim ',' :
+
+size = getCharCount(inFile, ',') + 1;
+int* arr = new int[size];
+
+for (size_t i = 0; i < size; i++) {
+	inFile >> arr[i];
+	inFile.ignore();
+}
+
+-------------------------------------------------------------------------------------------------
+
+template <typename T, const unsigned S>
+class MyStack
+
+-------------------------------------------------------------------------------------------------
+
+double average(int x) const
+{
+	return (first(x) + second(x)) / 2.0;   // 2.0 shtoto e double
+}
+
+-------------------------------------------------------------------------------------------------
+
+Animal(AnimalType type) : type(type) {};
+virtual void roar() const = 0;
+virtual Animal* clone()  const = 0;
+virtual ~Animal() = default;
+
+--------------------------------------------------------------------------------------------------
+
+base:
+
+virtual void doSmth() = 0;
+virtual Base* clone() const = 0;
+virtual ~Base() = default;
+
+collection:
+
+Base** arr;
+size_t count;
+size_t cap;
+cF,free,mF
+Big 6 - maybe with 2 ctors + some doSmth that does smth + maybe [] x2 + maybe add/remove/contains
+
+----------------------------------------------------------------------------------------------------
+
+class Der : public Base
+
+virtual ~Base() = default;
+
+pri ctor(const char*) purvo if arr==nullptr
+
+data[size++] = gameObject; //game obj from factory
+
+----------------------------------------------------------------------------------------------------
+
+kato ima friend op<< v template class se slaga template<class F> otgore kat nashto e s T
+
+ako iztriq ctor pak moga da mu napraq template-na specializaciq
+
+
+const T* begin = nullptr;
+const T* end = nullptr;
+---
+ArrayView<T> subArr(unsigned beginInd);
+ArrayView<T> subArr(unsigned beginInd, size_t size);
+
+ArrayView<T>::ArrayView(const T* arr, size_t size) : begin(arr), end(begin + size) {}
+[] -> return begin[ind];
+
+template <class T>
+std::ostream& operator<<(std::ostream& os, const ArrayView<T>& view) {
+    const T* iter = view.begin;
+    while (iter != view.end) {
+        os << (*iter);
+        iter++;
+    }
+    return os;
+}
+
+size = end - begin
+
+subArr = ArrView(begin + index, size - index) // begin + index , end - begin - index -> za kolko broq iskash zatui
+
+-----------------------------------------------------------------------------------------------------
+
+void Farm::resize()
+{
+	Animal** newCollection = new Animal * [capacity *= 2];
+	for (size_t i = 0; i < animalsCount; i++)
+		newCollection[i] = animals[i]; // !!не правим клониране
+	delete[] animals;
+	animals = newCollection;
+}
+
+void Farm::addAnimal(AnimalType animalType)
+{
+	if (animalsCount == capacity)
+		resize();
+	animals[animalsCount++] = animalFactory(animalType);
+}
+
+void Farm::addAnimal(const Animal& animal)
+{
+	if (animalsCount == capacity)
+		resize();
+	animals[animalsCount++] = animal.clone();
+}
+
+-------------------------------------------------------------------------------------------------------
+
+stack[size++] = std::move(obj);
+
+stack.pop() e samo size--
+
+queue -> T* data, size, capacity, get, put
+
+----
+data[put] = obj; 
+(++put) %= capacity;
+size++;
+----
+(++get) %= capacity;
+size--;
+----
+
+------------------------------------------------------------------------------------------------------
+
+memcpy(dest, source, size) for copying not null terminated strings //like hex array, bitwise operations array and so on
+
+
+template <class T>
+friend void operator>>(const T& toSerialize, HexArray& arr)
+{
+    unsigned char* newData = createAndFillByteArray(arr.size + sizeof(T), arr.data, arr.size);
+    memcpy(newData + arr.getSize(), reinterpret_cast<const unsigned char*>(&toSerialize), sizeof(T));
+    arr.size += sizeof(T);
+    delete[] arr.data;
+    arr.data = newData;
+}
+
+
+
+moje da iska Serialize ierarhiq s clone, ~, serialize i tam da si nasledqwat i da si praqt neshtata s factory i analoga na collection
+e da ima Serializer* ser  i ne masiv ami delete ser v ~ shoto da iztrie obekta i vutre v ctor-a da si polzwa factorito primerno
+...
+analogichno da ima Deserialize class ierarhiq sus sushtite neshta
+
+----------------------------------------------------------------------------------------------------------
+
+using func = unsigned(*)(unsigned);
+unsigned(*f2)(unsigned);
+
+f = [](unsigned value){
+	return value;
+};
+
+---
+
+struct Pair {
+	int point = -1;
+	int value = -1;
+};
+Pair* modified = nullptr; // Big 6
+unsigned capacity = 0;
+unsigned count = 0;
+
+---
+
+override/final
+
+---
+
+Set sus samo 3-4 virtualni func (), nai-veroqtno templaten // 2 ot koito clone i ~
+i SetOperations s ** i big 6
+i nqkvi union/intersection ili min/max naslednici na ** klasa det priemat T za criteria
+i za da gi polzvam mi trqq struct s : x operator()(y) const
+
+---------------------------------------------------------------------------------------------------------
+
+v copyFrom kloniram, v resize ne !
+
+---------------------------------------------------------------------------------------------------------
+
+moje v ne templaten class da ima templatena funkciq:
+
+template <class T>
+friend void operator>>(const T& toSerialize, HexArray& arr)
+
+----------------------------------------------------------------------------------------------------------
