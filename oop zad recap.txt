@@ -446,3 +446,8 @@ ako imam T* const ptr => moga da promenqm dannite , no ne moga da promenq nakude
 ako pishe che trqbwa da ima tochno edin ctor , tova NE oznachava che trbqwa da triem CC,MC ili drugo
 ----------------------------------------------------------------------------------------------------------
 
+samo v .h faila imame dumi kato static,override,virtual,final 
+v .cpp faila nqma takiva
+
+----------------------------------------------------------------------------------------------------------
+
