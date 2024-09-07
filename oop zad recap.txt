@@ -443,5 +443,6 @@ trqbwa
 ako imam const T* ptr => ne moga da promenq dannite , no moga da promenq nakude sochi
 ako imam T* const ptr => moga da promenqm dannite , no ne moga da promenq nakude sochi // this e taka
 
+ako pishe che trqbwa da ima tochno edin ctor , tova NE oznachava che trbqwa da triem CC,MC ili drugo
 ----------------------------------------------------------------------------------------------------------
 
