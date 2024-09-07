@@ -449,5 +449,7 @@ ako pishe che trqbwa da ima tochno edin ctor , tova NE oznachava che trbqwa da t
 samo v .h faila imame dumi kato static,override,virtual,final 
 v .cpp faila nqma takiva
 
+static promenliite se setvat v .cpp failaa
+
 ----------------------------------------------------------------------------------------------------------
 
