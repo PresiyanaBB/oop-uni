@@ -428,3 +428,20 @@ template <class T>
 friend void operator>>(const T& toSerialize, HexArray& arr)
 
 ----------------------------------------------------------------------------------------------------------
+
+ako imam ctor s param : const T& obj , trqbwa ako iskam pointer, koito da sochi kum toq obj i da ne moje da go promenq no da moga ako iskam da go smenq i da go set-na na drug obj:
+
+const T* ptr   // !!!! zaduljitelno konst zashtoto priemam const T& , towa ne znachi che nqma da moga da go 
+               // promenq ptr da sochi kum drug obj ako iskam !
+v ctor { ptr = &obj }  // zashtot trqbwa pointer a to e obekta
+
+nqmam destructor, zashtot ne trqbwa da kopiram obj i da si e moi i da ne vijdam promenite.
+trqbwa 
+
+---
+
+ako imam const T* ptr => ne moga da promenq dannite , no moga da promenq nakude sochi
+ako imam T* const ptr => moga da promenqm dannite , no ne moga da promenq nakude sochi // this e taka
+
+----------------------------------------------------------------------------------------------------------
+
