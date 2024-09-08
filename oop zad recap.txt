@@ -453,6 +453,13 @@ static promenliite se setvat v .cpp failaa
 
 ----------------------------------------------------------------------------------------------------------
 
-ako imam samo da implementiram intersection ili samo union ili samo min ili samo maks , to vupreki che samo edin klas shte go nasledi vse pak vinagi si pravq edin obsht bazov za da go nasledqt s virtualnite mu neshta i osobeno virtual eval i deteto da go override-ne
+ако искаме максимум 3 числа в интервал от 0 до 31 , то за да е оптимално откъм памет трябва да е :
+uint32_t data[2]
+
+така все едно нали 1 << н е мястото на нащо число във всеки бъкет. ако приемем че гледаме 2 бита за нащо число , то те могат да са 00, 01, 10, 11 => еквивалентни на: няма го, има го веднъж , има го 2 пъти, има го 3 пъти
+
+аналогично ако ни трябват макс х срещания ще намерим най близкото 11111(2) където да се побере
 
 ----------------------------------------------------------------------------------------------------------
+
+
