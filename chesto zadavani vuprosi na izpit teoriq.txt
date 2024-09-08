@@ -1,1 +1,70 @@
+Примери, които Ангел е иска да напишем като мини задачи. Решенията може да не са на 100% верни, но това е идеята им.
+
+-------------------------------------------------
+
+1. Напишете функция, която да приема итератор на колекция от произволен тип и да печата на конзолата елементите на колекцията
+
+Решение:
+template<typename T>
+void print(Iterator<T> iter)
+{
+    while(!iter.reachedEnd())
+    {
+        cout << iter;  // cout << iter.get();
+        iter++;
+    }
+}
+
+-------------------------------------------------
+
+2. Да се напише клас IntFuncMin, който приема 3 обекта IntFunction или клас, който се държи като функция и дава минимум на 3те
+
+template<typename T, typename S, typename V>
+class IntFuncMin
+{
+    T f1;
+    S f2;
+    V f3;
+public:
+    IntFuncMin(const T& t, const S& s, const V& v);
+    IntFuncMin(T&& t, S&& s, V&& v);
+
+    int min(int n);
+}
+
+template<typename T, typename S, typename V>
+IntFuncMin<T,S,V>::IntFuncMin(const T& t, const S& s, const V& v) : f1(t), f2(s), f3(v) {}
+
+template<typename T, typename S, typename V>
+IntFuncMin<T,S,V>::IntFuncMin(T&& t, S&& s, V&& v) : f1(std::move(t)), f2(std::move(s)), f3(std::move(v)) {}
+
+template<typename T, typename S, typename V>
+int IntFuncMin<T,S,V>::min(int n) // може да е const , но зависи от функциите, с които искаме да работим
+{
+    int res1 = f1(n);
+    int res2 = f2(n);
+    int res3 = f3(n);
+
+    return std::min(res1,res2,res3);
+}
+
+
+-------------------------------------------------
+
+3. Имаш Base с virtual f, virtual g. Имаш Der : virtual Base и в Der имаш g override. Как ще изглежда в паметта + vTable и vptr да се нарисуват
+
+-------------------------------------------------
+
+4. Ако имаш йерархия от Base и Der1, Der2, Der3 как ще изглежда abstract factory-то
+
+-------------------------------------------------
+
+5. Ако имаш int n как ще увеличиш на всеки байт в n с по една единица (ако е 255 да стане 0)
+
+Кастваш към char* и инкрементираш 4те байта
+
+-------------------------------------------------
+
+6. RVO пример
+
 
