@@ -453,3 +453,6 @@ static promenliite se setvat v .cpp failaa
 
 ----------------------------------------------------------------------------------------------------------
 
+ako imam samo da implementiram intersection ili samo union ili samo min ili samo maks , to vupreki che samo edin klas shte go nasledi vse pak vinagi si pravq edin obsht bazov za da go nasledqt s virtualnite mu neshta i osobeno virtual eval i deteto da go override-ne
+
+----------------------------------------------------------------------------------------------------------
